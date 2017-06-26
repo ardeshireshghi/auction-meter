@@ -1,0 +1,26 @@
+@mixin price-list-items($itemCount) {
+
+  $totalCount:24;
+  $initialRotate: ((($totalCount / 2) - ($totalCount - $itemCount)) / 2) * (360 / $totalCount);
+
+  @for $i from 1 through $itemCount {
+    $rotate: ($i - 1) * 15;
+
+    .auction-meter__prices__list__item:nth-child(#{$i}) {
+      transform: rotate(calc(#{$rotate}deg - #{$initialRotate}deg)) skew(75.5deg) translateZ(0);
+      .auction-meter__prices__list__item__content--text {
+         @if $i > ($itemCount / 2) {
+            transform: rotate(-100deg);
+         }
+      }
+    }
+  }
+}
+
+@mixin create-wheel-price-lists() {
+    @for $i from 1 through 24 {
+      .auction-meter--size-#{$i} & {
+        @include price-list-items($i);
+      }
+    }
+}

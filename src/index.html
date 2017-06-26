@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auction wheel meter</title>
+  <!-- inject:css -->
+  <!-- endinject -->
+</head>
+<body>
+ <section class="auction-meter"></section>
+
+  <!-- inject:js -->
+  <!-- endinject -->
+
+  <script type="text/javascript">
+    const AuctionWheelFactory = (function() {
+      class AuctionWheel {
+        constructor(el, options = {}) {
+          this.meterEl = (typeof el === 'string')
+            ? document.querySelector(el)
+            : el;
+
+          this.itemsCount = options.itemsCount || this.defaultItemCount;
+          this.data = options.data || [];
+        }
+
+        get CLASSLIST() {
+          return {
+            LIST_EL: 'auction-meter__prices__list__item',
+            LIST_CONTENT_TEXT: 'auction-meter__prices__list__item__content--text'
+          }
+        }
+
+        get defaultItemCount() {
+          return 16;
+        }
+
+        get template() {
+          return '<div class="auction-meter__inner"><div class="auction-meter__circle"><div class="container"><ul class="auction-meter__prices__list"></ul></div></div></div>';
+        }
+
+        create() {
+          let meterListEl;
+          this.meterEl.classList.add(`auction-meter--size-${this.itemsCount}`);
+          this.meterEl.innerHTML = this.template;
+
+          meterListEl = this.meterEl.querySelector('.auction-meter__prices__list');
+
+          for (let i = 1; i <= this.itemsCount; i++) {
+            meterListEl.appendChild(this.createWheelItem(this.data[i - 1]));
+          }
+        }
+
+        createWheelItem(data) {
+          const meterItem = document.createElement('li');
+            meterItem.className = 'auction-meter__prices__list__item';
+            meterItem.innerHTML = '<div class="auction-meter__prices__list__item__content"><span class="auction-meter__prices__list__item__content--text">' + data + '</div>';
+            return meterItem;
+
+        }
+
+        updateData(newData, index) {
+          const meterListEls = meterEl.getElementsByClassName(CLASSLIST.LIST_EL);
+          meterListEls[index]
+            .getElementsByClassName(CLASSLIST.LIST_CONTENT_TEXT)[0]
+            .textContent= newData;
+        }
+      }
+
+      return {
+        createWheel: (...thisArgs) => {
+          return new AuctionWheel(...thisArgs);
+        }
+      };
+    })(window);
+
+    var wheel = AuctionWheelFactory.createWheel('.auction-meter', {
+      visibleItems: 16,
+      data: [
+        '£200',
+        '£190',
+        '£180',
+        '£170',
+        '£160',
+        '£150',
+        '£140',
+        '£130',
+        '£120',
+        '£110',
+        '£100',
+        '£90',
+        '£80',
+        '£70',
+        '£60',
+        '£50',
+        '£40',
+        '£30',
+        '£20',
+        '£10'
+      ]
+    });
+
+    wheel.create();
+  </script>
+</body>
+</html>
