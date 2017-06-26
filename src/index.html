@@ -38,7 +38,7 @@
           return '<div class="auction-meter__inner"><div class="auction-meter__circle"><div class="container"><ul class="auction-meter__prices__list"></ul></div></div></div>';
         }
 
-        create() {
+        render() {
           let meterListEl;
           this.meterEl.classList.add(`auction-meter--size-${this.itemsCount}`);
           this.meterEl.innerHTML = this.template;
@@ -99,7 +99,7 @@
       ]
     });
 
-    wheel.create();
+    wheel.render();
   </script>
 </body>
 </html>
